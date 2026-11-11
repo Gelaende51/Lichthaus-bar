@@ -8,7 +8,7 @@ def test_install_and_uninstall_in_temp_home(tmp_path):
     env = dict(os.environ, HOME=str(tmp_path), PATH="/usr/bin:/bin")
     r = subprocess.run(["sh", str(ROOT / "install.sh")], env=env, capture_output=True, text=True)
     assert r.returncode == 0, r.stderr
-    dest = tmp_path / ".local" / "bin" / "hauslicht-bar"
+    dest = tmp_path / ".local" / "bin" / "lichthaus-bar"
     assert dest.read_bytes() == SCRIPT.read_bytes()
     assert os.access(dest, os.X_OK)
     assert "not on PATH" in r.stdout

@@ -1,12 +1,12 @@
-# Haus.Licht-bar
+# Lichthaus-bar
 
 **English** · [Deutsch](docs/i18n/README.de.md)
 
-A status-bar module for [Haus.Licht](https://github.com/Gelaende51/Haus.Licht):
+A status-bar module for [Lichthaus](https://github.com/Gelaende51/Lichthaus):
 Waybar, i3blocks (i3bar, swaybar) and Polybar. One Python 3 script, standard
 library only. On KDE Plasma use
-[Haus.Licht-plasma](https://github.com/Gelaende51/Haus.Licht-plasma); for
-other system trays, [Haus.Licht-tray](https://github.com/Gelaende51/Haus.Licht-tray).
+[Lichthaus-plasma](https://github.com/Gelaende51/Lichthaus-plasma); for
+other system trays, [Lichthaus-tray](https://github.com/Gelaende51/Lichthaus-tray).
 
 - **AI disclosure**
   - Agent: Claude Code with Claude Opus 5.5 (Anthropic) wrote the code,
@@ -18,7 +18,7 @@ other system trays, [Haus.Licht-tray](https://github.com/Gelaende51/Haus.Licht-t
 
 ## What it does
 
-It follows the Haus.Licht service's first widget (the bulbs and selection
+It follows the Lichthaus service's first widget (the bulbs and selection
 of the Plasma widget's first instance) over its ctl socket and prints one
 line per change.
 
@@ -30,44 +30,44 @@ line per change.
   and German (the locale).
 - **States / CSS classes:** `on`, `off`, `disconnected`, `unreachable`
   (the service is not running; it retries with back-off).
-- **Clicks** run `hauslicht-bar toggle` (on/off), `mode` (Automatic /
-  Manual), `settings` (`hauslicht config`), `up` / `down` (brightness ±5,
+- **Clicks** run `lichthaus-bar toggle` (on/off), `mode` (Automatic /
+  Manual), `settings` (`lichthaus config`), `up` / `down` (brightness ±5,
   as the Plasma widget's wheel).
 
 ## Install
 
-Needs Haus.Licht (its service running) and Python 3.
+Needs Lichthaus (its service running) and Python 3.
 
 ```sh
-git clone <this repository> Haus.Licht-bar && cd Haus.Licht-bar
-./install.sh      # copies hauslicht-bar to ~/.local/bin
+git clone <this repository> Lichthaus-bar && cd Lichthaus-bar
+./install.sh      # copies lichthaus-bar to ~/.local/bin
 ```
 
 `./uninstall.sh` removes it.
 
 ### Waybar
 
-`config.jsonc`, then add `"custom/hauslicht"` to a modules list:
+`config.jsonc`, then add `"custom/lichthaus"` to a modules list:
 
 ```jsonc
-"custom/hauslicht": {
-    "exec": "hauslicht-bar",            // --icons nerd, --text "{icon} {name}"
+"custom/lichthaus": {
+    "exec": "lichthaus-bar",            // --icons nerd, --text "{icon} {name}"
     "return-type": "json",
-    "on-click": "hauslicht-bar toggle",
-    "on-click-middle": "hauslicht-bar mode",
-    "on-click-right": "hauslicht-bar settings",
-    "on-scroll-up": "hauslicht-bar up",
-    "on-scroll-down": "hauslicht-bar down"
+    "on-click": "lichthaus-bar toggle",
+    "on-click-middle": "lichthaus-bar mode",
+    "on-click-right": "lichthaus-bar settings",
+    "on-scroll-up": "lichthaus-bar up",
+    "on-scroll-down": "lichthaus-bar down"
 }
 ```
 
 `style.css`:
 
 ```css
-#custom-hauslicht.on           { color: #f5c542; }
-#custom-hauslicht.off          { opacity: 0.6; }
-#custom-hauslicht.disconnected { color: #e0a030; }
-#custom-hauslicht.unreachable  { color: #e05050; }
+#custom-lichthaus.on           { color: #f5c542; }
+#custom-lichthaus.off          { opacity: 0.6; }
+#custom-lichthaus.disconnected { color: #e0a030; }
+#custom-lichthaus.unreachable  { color: #e05050; }
 ```
 
 ### i3blocks (i3bar, swaybar)
@@ -76,8 +76,8 @@ The block stays running; i3blocks writes clicks to its input, and the
 script maps them (left, middle, right, wheel).
 
 ```ini
-[hauslicht]
-command=hauslicht-bar --format i3blocks
+[lichthaus]
+command=lichthaus-bar --format i3blocks
 interval=persist
 format=json
 ```
@@ -85,15 +85,15 @@ format=json
 ### Polybar
 
 ```ini
-[module/hauslicht]
+[module/lichthaus]
 type = custom/script
-exec = hauslicht-bar --format polybar
+exec = lichthaus-bar --format polybar
 tail = true
-click-left = hauslicht-bar toggle
-click-middle = hauslicht-bar mode
-click-right = hauslicht-bar settings
-scroll-up = hauslicht-bar up
-scroll-down = hauslicht-bar down
+click-left = lichthaus-bar toggle
+click-middle = lichthaus-bar mode
+click-right = lichthaus-bar settings
+scroll-up = lichthaus-bar up
+scroll-down = lichthaus-bar down
 ```
 
 `--format text` prints plain lines for anything else.

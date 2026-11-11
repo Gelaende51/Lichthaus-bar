@@ -50,7 +50,7 @@ def test_classes(bar, english):
     assert bar.state_class(sample_state(link="connected", connected=False)) == "disconnected"
     obj = json.loads(bar.render(None, "waybar"))
     assert obj["class"] == "unreachable" and obj["percentage"] == 0
-    assert obj["tooltip"] == "Haus.Licht service not reachable"
+    assert obj["tooltip"] == "Lichthaus service not reachable"
 
 
 def test_waybar_escapes_markup(bar, english):
@@ -88,18 +88,18 @@ def test_icon_sets(bar, english):
 
 def test_tooltip_english_and_german(bar, monkeypatch, english):
     tip = bar.view(sample_state())["tooltip"].split("\n")
-    assert tip[0] == "Haus.Licht · All bulbs · Automatic"
+    assert tip[0] == "Lichthaus · All bulbs · Automatic"
     assert "Desk: on, 50 %, connected" in tip
     assert "Shelf: off, 0 %, held" in tip
     assert not any("Unused" in t for t in tip)  # not in the widget
     monkeypatch.setenv("LANG", "de_DE.UTF-8")
     tip = bar.view(sample_state())["tooltip"].split("\n")
-    assert tip[0] == "Haus.Licht · Alle Lampen · Automatisch"
+    assert tip[0] == "Lichthaus · Alle Lampen · Automatisch"
     assert "Desk: an, 50 %, verbunden" in tip
     assert "Shelf: aus, 0 %, getrennt (gehalten)" in tip
-    assert bar.view(None)["tooltip"] == "Haus.Licht-Dienst nicht erreichbar"
+    assert bar.view(None)["tooltip"] == "Lichthaus-Dienst nicht erreichbar"
     monkeypatch.setenv("LC_ALL", "en_GB.UTF-8")
-    assert bar.view(None)["tooltip"] == "Haus.Licht service not reachable"
+    assert bar.view(None)["tooltip"] == "Lichthaus service not reachable"
 
 
 def test_old_protocol_hint(bar, english):
@@ -122,14 +122,14 @@ def run_cli(args, env_extra, **kw):
     ("down", [["nudge", "-5"]]),
 ])
 def test_subcommands(fake, sub, sent):
-    r = run_cli([sub], {"HAUSLICHT_SOCK": str(fake.path)})
+    r = run_cli([sub], {"LICHTHAUS_SOCK": str(fake.path)})
     assert r.returncode == 0, r.stderr
     assert [[q["cmd"]] + q["args"] for q in fake.requests] == sent
     assert all(q["which"] is None for q in fake.requests)
 
 
 def test_mode_subcommand(fake, bar):
-    env = {"HAUSLICHT_SOCK": str(fake.path)}
+    env = {"LICHTHAUS_SOCK": str(fake.path)}
     # Following, lit bulbs at different levels (Desk 50, Shelf off): pause.
     fake.state["bulbs_list"][1]["power"] = True
     fake.state["bulbs_list"][1]["output"] = 30.0
@@ -148,26 +148,26 @@ def test_mode_subcommand(fake, bar):
 
 
 def test_subcommand_unreachable(short_dir):
-    r = run_cli(["toggle"], {"HAUSLICHT_SOCK": str(short_dir / "none.sock")})
-    assert r.returncode == 1 and "hauslicht-bar:" in r.stderr
+    r = run_cli(["toggle"], {"LICHTHAUS_SOCK": str(short_dir / "none.sock")})
+    assert r.returncode == 1 and "lichthaus-bar:" in r.stderr
 
 
-def test_settings_runs_hauslicht_config(short_dir, fake):
+def test_settings_runs_lichthaus_config(short_dir, fake):
     bindir = short_dir / "bin"
     bindir.mkdir()
     log = short_dir / "called"
-    fake_hl = bindir / "hauslicht"
+    fake_hl = bindir / "lichthaus"
     fake_hl.write_text(f'#!/bin/sh\necho "$@" > "{log}"\n')
     fake_hl.chmod(0o755)
     r = run_cli(["settings"], {"PATH": f"{bindir}:{os.environ['PATH']}",
-                               "HAUSLICHT_SOCK": str(fake.path)})
+                               "LICHTHAUS_SOCK": str(fake.path)})
     assert r.returncode == 0, r.stderr
     assert wait_for(lambda: log.exists() and log.read_text().strip() == "config")
     assert fake.requests == []  # no ctl command
 
 
 def test_click_from_line(bar):
-    assert bar.click_from_line('{"name":"hauslicht","button":1,"x":3}') == "toggle"
+    assert bar.click_from_line('{"name":"lichthaus","button":1,"x":3}') == "toggle"
     assert bar.click_from_line("2") == "mode"
     assert bar.click_from_line('{"button":3}') == "settings"
     assert bar.click_from_line('{"button":4}') == "up"
@@ -195,7 +195,7 @@ class Lines:
 
 
 def follow_proc(sock, *extra):
-    env = dict(os.environ, HAUSLICHT_SOCK=str(sock), LANG="C.UTF-8")
+    env = dict(os.environ, LICHTHAUS_SOCK=str(sock), LANG="C.UTF-8")
     env.pop("LC_ALL", None)
     return subprocess.Popen([sys.executable, str(SCRIPT), "--base-delay", "0.05",
                              "--max-delay", "0.4", *extra], env=env,
@@ -231,7 +231,7 @@ def test_i3blocks_clicks_from_stdin(fake):
     try:
         out = Lines(p)
         assert json.loads(out.next())["full_text"] == "◉ 50%"
-        p.stdin.write('{"name":"hauslicht","button":1}\n')
+        p.stdin.write('{"name":"lichthaus","button":1}\n')
         p.stdin.flush()
         assert wait_for(lambda: any(q["cmd"] == "toggle" for q in fake.requests))
         p.stdin.write('{"button":5}\n')

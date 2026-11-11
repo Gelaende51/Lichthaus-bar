@@ -9,15 +9,15 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
-SCRIPT = ROOT / "hauslicht-bar"
+SCRIPT = ROOT / "lichthaus-bar"
 
 
 def load_bar():
     """The script as a module (it has no .py name)."""
     import importlib.machinery
     import importlib.util
-    loader = importlib.machinery.SourceFileLoader("hauslicht_bar", str(SCRIPT))
-    spec = importlib.util.spec_from_loader("hauslicht_bar", loader)
+    loader = importlib.machinery.SourceFileLoader("lichthaus_bar", str(SCRIPT))
+    spec = importlib.util.spec_from_loader("lichthaus_bar", loader)
     mod = importlib.util.module_from_spec(spec)
     loader.exec_module(mod)
     return mod

@@ -1,13 +1,13 @@
-# Haus.Licht-bar
+# Lichthaus-bar
 
 [English](../../README.md) · **Deutsch**
 
-Ein Statusleisten-Modul für [Haus.Licht](https://github.com/Gelaende51/Haus.Licht):
+Ein Statusleisten-Modul für [Lichthaus](https://github.com/Gelaende51/Lichthaus):
 Waybar, i3blocks (i3bar, swaybar) und Polybar. Ein Python-3-Skript, nur die
 Standardbibliothek. Unter KDE Plasma
-[Haus.Licht-plasma](https://github.com/Gelaende51/Haus.Licht-plasma)
+[Lichthaus-plasma](https://github.com/Gelaende51/Lichthaus-plasma)
 verwenden; für andere Systemabschnitte
-[Haus.Licht-tray](https://github.com/Gelaende51/Haus.Licht-tray).
+[Lichthaus-tray](https://github.com/Gelaende51/Lichthaus-tray).
 
 - **KI-Offenlegung**
   - Agent: Claude Code mit Claude Opus 5.5 (Anthropic) schrieb Code, Tests
@@ -19,7 +19,7 @@ verwenden; für andere Systemabschnitte
 
 ## Was es tut
 
-Es folgt dem ersten Widget des Haus.Licht-Dienstes (Lampen und Auswahl der
+Es folgt dem ersten Widget des Lichthaus-Dienstes (Lampen und Auswahl der
 ersten Instanz des Plasma-Widgets) über dessen ctl-Socket und gibt bei jeder
 Änderung eine Zeile aus.
 
@@ -31,17 +31,17 @@ ersten Instanz des Plasma-Widgets) über dessen ctl-Socket und gibt bei jeder
   Deutsch oder Englisch (nach Locale).
 - **Zustände / CSS-Klassen:** `on`, `off`, `disconnected`, `unreachable`
   (der Dienst läuft nicht; es versucht es mit wachsendem Abstand erneut).
-- **Klicks** rufen `hauslicht-bar toggle` (an/aus), `mode` (Automatisch /
-  Manuell), `settings` (`hauslicht config`), `up` / `down` (Helligkeit ±5,
+- **Klicks** rufen `lichthaus-bar toggle` (an/aus), `mode` (Automatisch /
+  Manuell), `settings` (`lichthaus config`), `up` / `down` (Helligkeit ±5,
   wie das Mausrad des Plasma-Widgets).
 
 ## Installation
 
-Braucht Haus.Licht (Dienst läuft) und Python 3.
+Braucht Lichthaus (Dienst läuft) und Python 3.
 
 ```sh
-git clone <dieses Repository> Haus.Licht-bar && cd Haus.Licht-bar
-./install.sh      # kopiert hauslicht-bar nach ~/.local/bin
+git clone <dieses Repository> Lichthaus-bar && cd Lichthaus-bar
+./install.sh      # kopiert lichthaus-bar nach ~/.local/bin
 ```
 
 `./uninstall.sh` entfernt es. Fertige Konfigurationen für Waybar

@@ -3,8 +3,8 @@
 ## One script, the client copied in
 
 The bar must stay standard-library only and installable as one file, so
-Haus.Licht-tray's `client.py` (request, protocol check, `Watcher` with
-back-off and debounced `get`) is copied into `hauslicht-bar` rather than
+Lichthaus-tray's `client.py` (request, protocol check, `Watcher` with
+back-off and debounced `get`) is copied into `lichthaus-bar` rather than
 imported. A fix there needs copying here too. The tests load the script
 (no `.py` name) through `importlib.machinery.SourceFileLoader`.
 
@@ -37,8 +37,8 @@ the Waybar format only.
 
 ## Testing beside the live daemon
 
-As in Haus.Licht-tray: the mock-daemon test gives the daemon its own state
+As in Lichthaus-tray: the mock-daemon test gives the daemon its own state
 file, socket, HOME and XDG directories, no session bus and
-`HAUSLICHT_BACKENDS=mock`, confirms the paths first and checks the live
+`LICHTHAUS_BACKENDS=mock`, confirms the paths first and checks the live
 files' mtime and size afterwards. The script under test gets the same
-environment, so `HAUSLICHT_SOCK` points it at the test socket.
+environment, so `LICHTHAUS_SOCK` points it at the test socket.
